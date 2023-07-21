@@ -1,0 +1,104 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+:root{
+    --backgroundClr:rgb(250,248,239);
+    --playBackClr:rgb(187,173,160); /* playzone background color darker than empty tile*/
+    --emptyTileClr:rgb(205,193,180);
+}
+/* main is used for centering and background  */
+main{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--backgroundClr);
+}
+#playzone{
+    width:32vmax;
+    height:32vmax;
+    background-color: var(--playBackClr);
+    border: 0.3vmax solid var(--playBackClr) ;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around;
+}
+.tile{
+    width:7vmax ;
+    height: 7vmax;
+    margin: 0.2vmax;
+    font-size: 5vmax;
+    text-align: center;
+    padding-top: 2%;
+    background-color: var(--emptyTileClr);
+}
+/* css of individual type of colour */
+
+.x2 {
+    background-color: #eee4da;
+    color: #727371;
+}
+
+.x4 {
+    background-color: #ece0ca;
+    color: #727371;
+}
+
+.x8 {
+    background-color: #f4b17a;
+    color: white;
+}
+
+.x16{
+    background-color: #f59575;
+    color: white;
+}
+
+.x32{
+    background-color: #f57c5f;
+    color: white;
+}
+
+.x64{
+    background-color: #f65d3b;
+    color: white;
+}
+
+.x128{
+    background-color: #edce71;
+    color: white;
+}
+
+.x256{
+    background-color: #edcc63;
+    color: white;
+}
+
+.x512{
+    background-color: #edc651;
+    color: white;
+}
+
+.x1024{
+    background-color: #eec744;
+    color: white;
+}
+
+.x2048{
+    background-color: #ecc230;
+    color: white;
+}
+
+.x4096 {
+    background-color: #fe3d3d;
+    color: white;
+}
+
+.x8192 {
+    background-color: #ff2020;
+    color: white;
+}
