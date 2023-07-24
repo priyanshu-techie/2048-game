@@ -4,11 +4,12 @@ const playzone = document.getElementById("playzone");
 let r, c;
 
 let board = [
-    [8, 2, 0, 2],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
+    [0, 16, 8, 4],
+    [0, 4, 0, 0],
+    [0, 2, 2, 0],
+    [32, 8, 0, 2]
 ]
+// jab top right me alag alag ho to left not working
 
 function PaintBoard() {
     for (r = 0; r < rows; r++) {
@@ -174,55 +175,177 @@ function changeDown() {
     }
 }
 function changeLeft() {
-    for (c = 1; c < column; c++) {
-        for (r = 0; r < rows; r++) {
-            let num = board[r][c];
-            // if not an empty tile then do some action
-            if (num != 0) {
-                // if left has the same value then do this 
-                if (num == board[r][c - 1]) {
-                    board[r][c - 1] *= 2;
-                    board[r][c] = 0;
+    for (r = 0; r < rows; r++) {
+        // selecting a row
+        let array = board[r];
+        let arrayWithouZeros=array.filter(num=>num!==0);
+        // if it has some elems then do something 
+        if(arrayWithouZeros.length){
+            if(arrayWithouZeros.length==1){
+                // replacing the original array by pushing to right 
+                array[0]=arrayWithouZeros[0];
+                for(let i=1;i<4;i++){
+                    array[i]=0;
                 }
-                // if there is empty space above
-                if (board[r][c - 1] == 0) {
-                    board[r][c - 1] = board[r][c];
-                    board[r][c] = 0;
+            }
+            else if(arrayWithouZeros.length==2){
+                // if both elems are same 
+                if(arrayWithouZeros[0]===arrayWithouZeros[1]){
+                    arrayWithouZeros[0]*=2;
+                    array[0]=arrayWithouZeros[0];
+                    for(let i=1;i<4;i++){
+                        array[i]=0;
+                    }
                 }
-                // else dont make any changes
+                else{
+                    array[0]=arrayWithouZeros[0];
+                    array[1]=arrayWithouZeros[1];
+                    for(let i=2;i<4;i++){
+                        array[i]=0;
+                    }
+                }
+            }
+
+            else if(arrayWithouZeros.length==3){
+                let i=0;
+                while(i<2){
+                    if(arrayWithouZeros[i]===arrayWithouZeros[i+1]){
+                        arrayWithouZeros[i]*=2;
+                        arrayWithouZeros[i+1]=0;
+                        i+=2;
+                    }
+                    else{
+                        i++;
+                    }
+                }
+                arrayWithouZeros = arrayWithouZeros.filter(n=>n!==0);
+
+                // replacing the original array
+                let k=0;
+                for(let j=0;j<arrayWithouZeros.length;j++){
+                    array[j]=arrayWithouZeros[k];
+                    k++;
+                }
+                for(let j=arrayWithouZeros.length;j<4;j++){
+                    array[j]=0;
+                }
+            }
+
+            else if(arrayWithouZeros.length==4){
+                let i=0;
+                while(i<3){
+                    if(arrayWithouZeros[i]===arrayWithouZeros[i+1]){
+                        arrayWithouZeros[i]*=2;
+                        arrayWithouZeros[i+1]=0;
+                        i+=2;
+                    }
+                    else{
+                        i++;
+                    }
+                }
+                arrayWithouZeros = arrayWithouZeros.filter(n=>n!==0);
+
+                // replacing the original array
+                let k=0;
+                for(let j=0;j<arrayWithouZeros.length;j++){
+                    array[j]=arrayWithouZeros[k];
+                    k++;
+                }
+                for(let j=arrayWithouZeros.length;j<4;j++){
+                    array[j]=0;
+                }
             }
         }
+    
     }
 }
+
 function changeRight() {
-    for (c = 2; c >= 0; c--) {
         for (r = 0; r < rows; r++) {
-            let num = board[r][c];
-            // if not an empty tile then do some action
-            if (num != 0) {
-                // if right has the same value then do this 
-                if (num == board[r][c + 1]) {
-                    board[r][c + 1] *= 2;
-                    board[r][c] = 0;
-                }
-                // if there is empty space ahead
-                let i=1;
-                while(c+i<column){
-                    if(board[r][c+i]==0){
-                        board[r][c+i]=board[r][c+i-1];
-                        board[r][c+i-1]=0;
+            let array = board[r];
+            let arrayWithouZeros=array.filter(num=>num!==0);
+            // if it has some elems then do something 
+            if(arrayWithouZeros.length){
+                if(arrayWithouZeros.length==1){
+                    // replacing the original array by pushing to right 
+                    array[3]=arrayWithouZeros[0];
+                    for(let i=0;i<3;i++){
+                        array[i]=0;
                     }
-                    if(board[r][c+i]==board[r][c+i-1]){
-                        board[r][c+i]*=2;
-                        board[r][c+i-1]=0;
-                    }
-                    i++;
                 }
-                // else dont make any changes
+                else if(arrayWithouZeros.length==2){
+                    // if both elems are same 
+                    if(arrayWithouZeros[0]===arrayWithouZeros[1]){
+                        arrayWithouZeros[1]*=2;
+                        array[3]=arrayWithouZeros[1];
+                        for(let i=0;i<3;i++){
+                            array[i]=0;
+                        }
+                    }
+                    else{
+                        for(let i=0;i<2;i++){
+                            array[i]=0;
+                        }
+                        array[2]=arrayWithouZeros[0];
+                        array[3]=arrayWithouZeros[1];
+                    }
+                }
+                else if(arrayWithouZeros.length==3){
+                    let i=2;
+                    while(i>0){
+                        if(arrayWithouZeros[i]===arrayWithouZeros[i-1]){
+                            arrayWithouZeros[i]*=2;
+                            arrayWithouZeros[i-1]=0;
+                            i-=2;
+                        }
+                        else{
+                            i--;
+                        }
+                    }
+                    arrayWithouZeros = arrayWithouZeros.filter(n=>n!==0);
+
+                    // replacing the original array
+                    for(let j=0;j<4-arrayWithouZeros.length;j++)
+                        array[j]=0;
+                    let k=0;                        
+                    for(let j=4-arrayWithouZeros.length;j<4;j++){
+                        array[j]=arrayWithouZeros[k];
+                        k++;
+                    }
+                }
+
+                else if(arrayWithouZeros.length==4){
+                    let i=3;
+                    while(i>0){
+                        if(arrayWithouZeros[i]===arrayWithouZeros[i-1]){
+                            arrayWithouZeros[i]*=2;
+                            arrayWithouZeros[i-1]=0;
+                            i-=2;
+                        }
+                        else{
+                            i--;
+                        }
+                    }
+                    arrayWithouZeros = arrayWithouZeros.filter(n=>n!==0);
+
+                    // replacing the original array
+                    for(let j=0;j<4-arrayWithouZeros.length;j++)
+                        array[j]=0;
+                    let k=0;                        
+                    for(let j=4-arrayWithouZeros.length;j<4;j++){
+                        array[j]=arrayWithouZeros[k];
+                        k++;
+                    }
+                }
             }
+        
         }
-    }
 }
+
+
+
+
+
 
 // generate random nos at places
 // generate only 2s and only generate 4s it the score goes above some threshold
