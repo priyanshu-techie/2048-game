@@ -2,14 +2,14 @@ const rows = 4;
 const column = 4;
 const playzone = document.getElementById("playzone");
 let r, c;
+let emptyBoxes=[]; 
 
 let board = [
-    [0, 16, 8, 4],
-    [0, 4, 0, 0],
-    [0, 2, 2, 0],
-    [32, 8, 0, 2]
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
 ]
-// jab top right me alag alag ho to left not working
 
 function PaintBoard() {
     for (r = 0; r < rows; r++) {
@@ -21,8 +21,13 @@ function PaintBoard() {
         }
     }
 }
+window.onload=()=>{
+    selectEmptyBoxes();
+    Repaint();
+}
 
-PaintBoard();
+
+
 
 function Repaint() {
     playzone.innerHTML = "";
@@ -31,76 +36,44 @@ function Repaint() {
 
 
 function updatetile(tile, num) {
-    switch (num) {
-        case 0:
-            playzone.append(tile);
-            break;
-        case 2:
-            tile.classList.add("x2");
-            tile.innerText = "2";
-            playzone.append(tile);
-            break;
-        case 4:
-            tile.classList.add("x4");
-            tile.innerText = "4";
-            playzone.append(tile);
-            break;
-        case 8:
-            tile.classList.add("x8");
-            tile.innerText = "8";
-            playzone.append(tile);
-            break;
-        case 16:
-            tile.classList.add("x16");
-            tile.innerText = "16";
-            playzone.append(tile);
-            break;
-        case 32:
-            tile.classList.add("x32");
-            tile.innerText = "32";
-            playzone.append(tile);
-            break;
-        case 64:
-            tile.classList.add("x64");
-            tile.innerText = "64";
-            playzone.append(tile);
-            break;
-        case 128:
-            tile.classList.add("x128");
-            tile.innerText = "128";
-            playzone.append(tile);
-            break;
-        case 256:
-            tile.classList.add("x256");
-            tile.innerText = "256";
-            playzone.append(tile);
-            break;
-        case 512:
-            tile.classList.add("x512");
-            tile.innerText = "512";
-            playzone.append(tile);
-            break;
-        case 1024:
-            tile.classList.add("x1024");
-            tile.innerText = "1024";
-            playzone.append(tile);
-            break;
-        case 2048:
-            tile.classList.add("x2048");
-            tile.innerText = "2048";
-            playzone.append(tile);
-            break;
-        case 4096:
-            tile.classList.add("x4096");
-            tile.innerText = "4096";
-            playzone.append(tile);
-            break;
-        default:
-            tile.classList.add('x8192');
-            tile.innerText = "8192";
-            playzone.append(tile);
+    if(num>0){
+        tile.classList.add("x"+num.toString());
+        tile.innerText=num;
+    }
+    playzone.append(tile);
+}
+
+function selectEmptyBoxes(){
+    emptyBoxes=[];
+    // updating empty boxes 
+    for(c=0;c<column;c++){
+        for(r=0;r<rows;r++){
+            if(board[r][c]===0){
+                emptyBoxes.push(r*10+c);
+            }
+        }
+    }
+    // selecting random index from the empty box list
+    let box1=Math.floor(Math.random()*emptyBoxes.length); // index1
+    // getting the column and row val
+    let randomColumn1=emptyBoxes[box1]%10;
+    let randomRow1=Math.floor(emptyBoxes[box1]/10);
+
+    // if all empty then select two boxes;
+    if(emptyBoxes.length==16){
+        let box2=Math.floor(Math.random()*emptyBoxes.length); // index2
+        let randomColumn2=emptyBoxes[box2]%10;
+        let randomRow2=Math.floor(emptyBoxes[box2]/10);
+        board[randomRow1][randomColumn1]=2;    
+        board[randomRow2][randomColumn2]=2;    
+    }
+    else{
+        // updating the board elem and putting 2 or 4 usnig the array
+        let options =[2,2,2,2,2,2,2,2,2,4,4,4] // this increases the chance of 2 over 4.
+        board[randomRow1][randomColumn1]=options[Math.floor(Math.random()*12)];
     }
 }
+
 
 // we will do all the calculations mathematically and doing the hevy lifting of changing dom only once
 // hence even with so many n² calculations our performance is not degrading as the size of input is very small and it will not increase 
@@ -132,53 +105,60 @@ window.addEventListener('keyup', (e) => {
 })
 
 function changeUp() {
-    for (r = 1; r < rows; r++) {
-        for (c = 0; c < column; c++) {
-            let num = board[r][c];
-            // if not an empty tile then do some action
-            if (num != 0) {
-                // if above has the same value then do this 
-                if (num == board[r - 1][c]) {
-                    board[r - 1][c] *= 2;
-                    board[r][c] = 0;
-                }
-                // if there is empty space above
-                if (board[r - 1][c] == 0) {
-                    board[r - 1][c] = board[r][c];
-                    board[r][c] = 0;
-                }
-                // else dont make any changes  
-            }
+    // create the array first 
+    // change the array
+    // update the boardll
+    for(c=0;c<column;c++){
+        let array=[];
+        for(r=0;r<rows;r++){
+            array.push(board[r][c]);
+        }
+        LeftOperation(array);
+        // after the array has been processed it is the placed at its correct place
+        for(r=0;r<rows;r++){
+            board[r][c]=array[r];
         }
     }
+    selectEmptyBoxes();
 }
 
 function changeDown() {
-    for (r = 2; r >= 0; r--) {
-        for (c = 0; c < column; c++) {
-            let num = board[r][c];
-            // if not an empty tile then do some action
-            if (num != 0) {
-                // if down has the same value then do this 
-                if (num == board[r + 1][c]) {
-                    board[r + 1][c] *= 2;
-                    board[r][c] = 0;
-                }
-                // if there is empty space above
-                if (board[r + 1][c] == 0) {
-                    board[r + 1][c] = board[r][c];
-                    board[r][c] = 0;
-                }
-                // else dont make any changes
-            }
+    // create the array first 
+    // change the array
+    // update the boardll
+    for(c=0;c<column;c++){
+        let array=[];
+        for(r=0;r<rows;r++){
+            array.push(board[r][c]);
+        }
+        RightOperation(array);
+        // after the array has been processed it is the placed at its correct place
+        for(r=0;r<rows;r++){
+            board[r][c]=array[r];
         }
     }
+    selectEmptyBoxes();
 }
 function changeLeft() {
     for (r = 0; r < rows; r++) {
         // selecting a row
         let array = board[r];
-        let arrayWithouZeros=array.filter(num=>num!==0);
+        LeftOperation(array);
+    
+    }
+    selectEmptyBoxes();
+}
+
+function changeRight() {
+        for (r = 0; r < rows; r++) {
+            let array = board[r];
+            RightOperation(array);    
+        }
+        selectEmptyBoxes();
+}
+
+function LeftOperation(array){
+    let arrayWithouZeros=array.filter(num=>num!==0);
         // if it has some elems then do something 
         if(arrayWithouZeros.length){
             if(arrayWithouZeros.length==1){
@@ -256,19 +236,17 @@ function changeLeft() {
                 }
             }
         }
-    
-    }
 }
 
-function changeRight() {
-        for (r = 0; r < rows; r++) {
-            let array = board[r];
-            let arrayWithouZeros=array.filter(num=>num!==0);
+
+function RightOperation(array){
+    let arrayWithouZeros=array.filter(num=>num!==0);
             // if it has some elems then do something 
             if(arrayWithouZeros.length){
                 if(arrayWithouZeros.length==1){
                     // replacing the original array by pushing to right 
                     array[3]=arrayWithouZeros[0];
+                    // for(let i=0;i<4-awz.length)
                     for(let i=0;i<3;i++){
                         array[i]=0;
                     }
@@ -331,7 +309,7 @@ function changeRight() {
                     // replacing the original array
                     for(let j=0;j<4-arrayWithouZeros.length;j++)
                         array[j]=0;
-                    let k=0;                        
+                    let k=0;
                     for(let j=4-arrayWithouZeros.length;j<4;j++){
                         array[j]=arrayWithouZeros[k];
                         k++;
@@ -340,13 +318,15 @@ function changeRight() {
             }
         
         }
-}
 
 
 
 
-
-
+// have the initial 2's at two random places
+// implement to get 4;s randomly        
+// ager move karne ka jagha na ho tab new add nahi karna hai 
+// make the left operation and right operation - do not repeat code
+// implement score count 
 // generate random nos at places
 // generate only 2s and only generate 4s it the score goes above some threshold
 // make mobile working as well
