@@ -5,17 +5,18 @@ const currScoreVal=document.getElementById("currScoreVal");
 const bestScoreVal=document.getElementById("bestScoreVal");
 let r, c;
 let emptyBoxes=[]; 
-let score=0;
+let score=localStorage.getItem("currentScore")!==null?Number(JSON.parse(localStorage.getItem("currentScore"))):0;
 currScoreVal.innerText=score;
-let bestScore=0;
+let bestScore=localStorage.getItem("bestScore")!==null?Number(JSON.parse(localStorage.getItem("bestScore"))):0;
 bestScoreVal.innerText=bestScore;
 
-let board = [
+const startBoard=[
     [0,0,0,0],
     [0,0,0,0],
     [0,0,0,0],
     [0,0,0,0]
-]
+];
+let board =localStorage.getItem("board")!==null?JSON.parse(localStorage.getItem("board")):startBoard;
 
 function PaintBoard() {
     for (r = 0; r < rows; r++) {
@@ -32,7 +33,11 @@ window.onload=()=>{
     Repaint();
 }
 
-
+window.onbeforeunload=()=>{
+    localStorage.setItem("currentScore",JSON.stringify(score));
+    localStorage.setItem("bestScore",JSON.stringify(bestScore));
+    localStorage.setItem("board",JSON.stringify(board));
+}
 
 
 function Repaint() {
@@ -368,8 +373,4 @@ function RightOperation(array){
 
 
 // ager move karne ka jagha na ho tab new add nahi karna hai 
-// make the left operation and right operation - do not repeat code
-// implement score count 
-// generate only 2s and only generate 4s it the score goes above some threshold
 // make mobile working as well
-// add local storage
