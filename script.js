@@ -6,7 +6,9 @@ const bestScoreVal=document.getElementById("bestScoreVal");
 let r, c;
 let emptyBoxes=[]; 
 let score=0;
+currScoreVal.innerText=score;
 let bestScore=0;
+bestScoreVal.innerText=bestScore;
 
 let board = [
     [0,0,0,0],
@@ -45,6 +47,8 @@ function RestartGame(){
         [0,0,0,0],
         [0,0,0,0]
     ]
+    score=0;
+    currScoreVal.innerText=0;
     playzone.id="playzone"
     selectEmptyBoxes();
     Repaint();
@@ -182,6 +186,16 @@ function changeRight() {
         selectEmptyBoxes();
 }
 
+function UpdateScore(scoreVal){
+    score+=scoreVal;
+    if(score>bestScore){
+        bestScore=score;
+        bestScoreVal.innerText=bestScore;
+    }
+    // updating the dom
+    currScoreVal.innerText=score;
+}
+
 function LeftOperation(array){
     let arrayWithouZeros=array.filter(num=>num!==0);
         // if it has some elems then do something 
@@ -197,6 +211,7 @@ function LeftOperation(array){
                 // if both elems are same 
                 if(arrayWithouZeros[0]===arrayWithouZeros[1]){
                     arrayWithouZeros[0]*=2;
+                    UpdateScore(arrayWithouZeros[0]);
                     array[0]=arrayWithouZeros[0];
                     for(let i=1;i<4;i++){
                         array[i]=0;
@@ -216,6 +231,7 @@ function LeftOperation(array){
                 while(i<2){
                     if(arrayWithouZeros[i]===arrayWithouZeros[i+1]){
                         arrayWithouZeros[i]*=2;
+                        UpdateScore(arrayWithouZeros[i]);
                         arrayWithouZeros[i+1]=0;
                         i+=2;
                     }
@@ -241,6 +257,7 @@ function LeftOperation(array){
                 while(i<3){
                     if(arrayWithouZeros[i]===arrayWithouZeros[i+1]){
                         arrayWithouZeros[i]*=2;
+                        UpdateScore(arrayWithouZeros[i]);
                         arrayWithouZeros[i+1]=0;
                         i+=2;
                     }
@@ -280,6 +297,7 @@ function RightOperation(array){
                     // if both elems are same 
                     if(arrayWithouZeros[0]===arrayWithouZeros[1]){
                         arrayWithouZeros[1]*=2;
+                        UpdateScore(arrayWithouZeros[1]);
                         array[3]=arrayWithouZeros[1];
                         for(let i=0;i<3;i++){
                             array[i]=0;
@@ -298,6 +316,7 @@ function RightOperation(array){
                     while(i>0){
                         if(arrayWithouZeros[i]===arrayWithouZeros[i-1]){
                             arrayWithouZeros[i]*=2;
+                            UpdateScore(arrayWithouZeros[i]);
                             arrayWithouZeros[i-1]=0;
                             i-=2;
                         }
@@ -322,6 +341,7 @@ function RightOperation(array){
                     while(i>0){
                         if(arrayWithouZeros[i]===arrayWithouZeros[i-1]){
                             arrayWithouZeros[i]*=2;
+                            UpdateScore(arrayWithouZeros[i]);
                             arrayWithouZeros[i-1]=0;
                             i-=2;
                         }
