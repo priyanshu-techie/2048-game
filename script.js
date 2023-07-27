@@ -1,14 +1,18 @@
 const rows = 4;
 const column = 4;
 const playzone = document.getElementById("playzone");
+const currScoreVal=document.getElementById("currScoreVal");
+const bestScoreVal=document.getElementById("bestScoreVal");
 let r, c;
 let emptyBoxes=[]; 
+let score=0;
+let bestScore=0;
 
 let board = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0]
 ]
 
 function PaintBoard() {
@@ -34,6 +38,17 @@ function Repaint() {
     PaintBoard();
 }
 
+function RestartGame(){
+    board=[
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0]
+    ]
+    playzone.id="playzone"
+    selectEmptyBoxes();
+    Repaint();
+}
 
 function updatetile(tile, num) {
     if(num>0){
@@ -53,6 +68,16 @@ function selectEmptyBoxes(){
             }
         }
     }
+    // if no empty box then end the game
+    if(emptyBoxes.length===0){
+        playzone.id="playzoneInRestart";
+        playzone.innerHTML=`
+        <h1 id="gmOvr"> GAME OVER</h1>
+        <button id="restartBtn" onclick="RestartGame()"> Restart </button>
+        `
+        
+    }
+    
     // selecting random index from the empty box list
     let box1=Math.floor(Math.random()*emptyBoxes.length); // index1
     // getting the column and row val
@@ -322,12 +347,9 @@ function RightOperation(array){
 
 
 
-// have the initial 2's at two random places
-// implement to get 4;s randomly        
 // ager move karne ka jagha na ho tab new add nahi karna hai 
 // make the left operation and right operation - do not repeat code
 // implement score count 
-// generate random nos at places
 // generate only 2s and only generate 4s it the score goes above some threshold
 // make mobile working as well
 // add local storage

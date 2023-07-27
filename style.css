@@ -28,6 +28,15 @@ main{
     justify-content: space-around;
     align-content: space-around;
 }
+#playzoneInRestart{
+    display: block;
+    width:32vmax;
+    height:32vmax;
+    background-color: var(--playBackClr);
+    border: 0.3vmax solid var(--playBackClr) ;
+    text-align: center;
+    padding-top: 10%;
+}
 .tile{
     width:7vmax ;
     height: 7vmax;
@@ -113,4 +122,40 @@ main{
     color: white;
     font-size: 3vmax;
     padding-top: 5%;
+}
+
+#gmOvr{
+    color:rgb(135, 79, 0);
+}
+#restartBtn{
+    border: 2px solid black;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding:1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+.scoreBoard{
+    position: fixed;
+    top: 30%;
+    left:1%;    
+    border: 2px solid black;
+    padding: 2rem;
+}
+.currentScore,.bestScore{
+    background-color: rgb(187,173,160);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 7%;
+    margin-bottom: 2rem;
+}
+
+.currentScore>span,.bestScore>span{
+    font-size: 1.5rem;
+}
+.newgame{
+    padding:0.5rem;
+    background-color: hsl(29,16,48);
 }
