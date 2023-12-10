@@ -159,3 +159,7 @@ main{
     padding:0.5rem;
     background-color: hsl(29,16,48);
 }
+.instruction{
+    margin-top: 1rem;
+    padding:1rem;
+}

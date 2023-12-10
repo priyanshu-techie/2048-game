@@ -10,6 +10,8 @@ currScoreVal.innerText=score;
 let bestScore=localStorage.getItem("bestScore")!==null?Number(JSON.parse(localStorage.getItem("bestScore"))):0;
 bestScoreVal.innerText=bestScore;
 
+let flag=false;
+
 const startBoard=[
     [0,0,0,0],
     [0,0,0,0],
@@ -101,7 +103,8 @@ function selectEmptyBoxes(){
         board[randomRow1][randomColumn1]=2;    
         board[randomRow2][randomColumn2]=2;    
     }
-    else{
+    else if(!flag){ // if flag is false then do this
+        
         // updating the board elem and putting 2 or 4 usnig the array
         let options =[2,2,2,2,2,2,2,2,2,4,4,4] // this increases the chance of 2 over 4.
         board[randomRow1][randomColumn1]=options[Math.floor(Math.random()*12)];
